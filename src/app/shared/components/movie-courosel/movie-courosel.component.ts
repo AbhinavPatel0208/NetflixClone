@@ -2,20 +2,32 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import Swiper from 'swiper';
 import { IVideoContent } from '../../model/vedio-content.interface';
+import { DescriptionPipe } from '../../pipes/description.pipe';
+import { ImagePipe } from '../../pipes/image.pipe';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-movie-courosel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,DescriptionPipe,ImagePipe],
   templateUrl: './movie-courosel.component.html',
-  styleUrl: './movie-courosel.component.css'
+  styleUrl: './movie-courosel.component.css',
+  animations: [
+    trigger('fade', [
+      transition('void => *', [
+        style({ opacity: 0 }),
+        animate(300, style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class MovieCouroselComponent implements OnInit, AfterViewInit {
   
   @Input() vedioContents: IVideoContent[] = [];
   @Input() title!: string;
   
-  @ViewChild('swiperContainer') swiperContainer!: ElementRef
+  @ViewChild('swiperContainer') swiperContainer!: ElementRef;
+  selectContent: string | null = null;
   constructor() { }
 
   ngAfterViewInit(): void {
@@ -67,5 +79,13 @@ export class MovieCouroselComponent implements OnInit, AfterViewInit {
     })
   }
 
+
+  setHoverMovie(movie: IVideoContent) { 
+    this.selectContent = movie.title ?? movie.name;
+  }
+
+  clearHoverMovie() {
+    this.selectContent = null;
+   }
 
 }

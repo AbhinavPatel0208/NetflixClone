@@ -3,11 +3,11 @@
   <div #swiperContainer class="swiper-container ">
     <div class="swiper-wrapper">
       <ng-container *ngFor="let movie of vedioContents">
-        <div  class="swiper-slide relative">
-          <img [src]="'https://image.tmdb.org/t/p/w500/'+movie.poster_path" alt="">
-          <div  class="desc p-2">
+        <div (mouseenter)="setHoverMovie(movie)" (mouseleave)="clearHoverMovie()" class="swiper-slide relative">
+          <img [src]="movie.poster_path | appImage" alt="">
+          <div @fade *ngIf="(movie.title === this.selectContent) || (movie.name === this.selectContent)" class="desc p-2">
             <span class="text-base flex flex-wrap font-bold">{{movie.original_title}}</span>
-            <p class="text-xs my-3">{{movie.overview}}</p>
+            <p class="text-xs my-3">{{movie.overview | appDescription: 140}}</p>
             <div class="py-3 absolute w-[90%] bottom-1">
               <p class="text-xs flex justify-between items-center">
                 <span class="text-green-500">Vote Average : {{movie.vote_average}}</span>

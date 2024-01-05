@@ -6,6 +6,8 @@ import { HeadersComponent } from '../../core/components/headers/headers.componen
 import { BannerComponent } from '../../core/components/banner/banner.component';
 import { MovieCouroselComponent } from '../../shared/components/movie-courosel/movie-courosel.component';
 import { IVideoContent } from '../../shared/model/vedio-content.interface';
+import { Observable, forkJoin, map } from 'rxjs';
+
 
 @Component({
   selector: 'app-browse',
@@ -20,16 +22,51 @@ export class BrowseComponent {
   name = JSON.parse(sessionStorage.getItem("loggedInUser")!).name;
   userProfileImg = JSON.parse(sessionStorage.getItem("loggedInUser")!).picture;
   email = JSON.parse(sessionStorage.getItem("loggedInUser")!).email;
+  bannerDetail$ = new Observable<any>();
+  bannerVideo$ = new Observable<any>();
 
+  movies: IVideoContent[] = [];
+  tvShows: IVideoContent[] = [];
+  ratedMovies: IVideoContent[] = [];
+  nowPlayingMovies: IVideoContent[] = [];
+  popularMovies: IVideoContent[] = [];
+  topRatedMovies: IVideoContent[] = [];
+  upcomingMovies: IVideoContent[] = [];
 
-  popluarMovies: IVideoContent[] = [];
+  sources = [
+    this.MovieService.getMovies(),
+    this.MovieService.getTvShows(),
+    this.MovieService.getRatedMovies(),
+    this.MovieService.getNowPlayingMovies(),
+    this.MovieService.getUpcomingMovies(),
+    this.MovieService.getPopularMovies(),
+    this.MovieService.getTopRated()
+  ];
 
   ngOnInit(): void { 
-    this.MovieService.getMovies()
-      .subscribe(res => { 
-        console.log(res);
-        this.popluarMovies = res.results;
+    forkJoin(this.sources)
+    .pipe(
+      map(([movies, tvShows, ratedMovies, nowPlaying, upcoming, popular, topRated])=>{
+        this.bannerDetail$ = this.MovieService.getBannerDetail(movies.results[0].id);
+        this.bannerVideo$ = this.MovieService.getBannerVideo(movies.results[0].id);
+        return {movies, tvShows, ratedMovies, nowPlaying, upcoming, popular, topRated}
       })
+    ).subscribe((res:any)=>{
+      this.movies = res.movies.results as IVideoContent[];
+      this.tvShows = res.tvShows.results as IVideoContent[];
+      this.ratedMovies = res.ratedMovies.results as IVideoContent[];
+      this.nowPlayingMovies = res.nowPlaying.results as IVideoContent[];
+      this.upcomingMovies = res.upcoming.results as IVideoContent[];
+      this.popularMovies = res.popular.results as IVideoContent[];
+      this.topRatedMovies = res.topRated.results as IVideoContent[];
+      this.getMovieKey();
+    })
+  }
+    getMovieKey() {
+    this.MovieService.getBannerVideo(this.movies[0].id)
+    .subscribe(res=>{
+      console.log(res);
+    })
   }
 
   signOut() { 

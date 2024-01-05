@@ -5,6 +5,7 @@ import { Component, inject } from '@angular/core';
 import { HeadersComponent } from '../../core/components/headers/headers.component';
 import { BannerComponent } from '../../core/components/banner/banner.component';
 import { MovieCouroselComponent } from '../../shared/components/movie-courosel/movie-courosel.component';
+import { IVideoContent } from '../../shared/model/vedio-content.interface';
 
 @Component({
   selector: 'app-browse',
@@ -20,11 +21,14 @@ export class BrowseComponent {
   userProfileImg = JSON.parse(sessionStorage.getItem("loggedInUser")!).picture;
   email = JSON.parse(sessionStorage.getItem("loggedInUser")!).email;
 
+
+  popluarMovies: IVideoContent[] = [];
+
   ngOnInit(): void { 
     this.MovieService.getMovies()
       .subscribe(res => { 
         console.log(res);
-        
+        this.popluarMovies = res.results;
       })
   }
 

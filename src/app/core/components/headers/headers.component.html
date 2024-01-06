@@ -1,24 +1,17 @@
-<header class="h-[68px] z-10 bg-gray-900 sticky top-0 flex items-center justify-between px-10">
-  <!-- logo - navitems -->
-  <div class="flex gap-5">
-    <img width="110" src="/assets/pngwing.com.png" alt="Netflix Logo">
-    
-    <ul class="flex items-center" *ngFor="let item of navList">
-      <li class="text-neutral-200 cursor-pointer text-sm font-extralight hover:text-gray-400 transition-[1s]">{{item}}</li>
+<header class="bg-gray-900 sticky top-0 px-4 sm:px-10 py-2 flex items-center justify-between">
+  <!-- Logo and Navigation -->
+  <div class="flex items-center gap-5">
+    <img class="w-28" src="/assets/pngwing.com.png" alt="Netflix Logo">
+    <ul class="hidden sm:flex items-center space-x-5">
+      <li class="text-neutral-200 cursor-pointer text-sm font-extralight hover:text-gray-400 transition-[1s]" *ngFor="let item of navList">{{item}}</li>
     </ul>
-
   </div>
 
   <!-- Welcome User | Profile Image | Sign Out -->
   <div class="text-white flex items-center gap-4">
-
-    <div class="flex items-center gap-2">
-      <a href=""><span>Welcome <strong>Abhi</strong></span></a>
-      <img [src]="userImg" width="42" alt="user-img">
-    </div>
-
-    &nbsp; |&nbsp;
+    <a href="" class="hidden sm:inline-block">Welcome <strong>Abhi</strong></a>
+    <img [src]="userImg" class="w-10" alt="user-img">
+    <span class="hidden sm:inline-block">&nbsp; |&nbsp;</span>
     <a href="/">Signout</a>
   </div>
-
 </header>

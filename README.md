@@ -1,4 +1,8 @@
 # NetflixClone
+![1](https://github.com/AbhinavPatel0208/NetflixClone/assets/71115461/6a7eacc1-b311-4c4b-b917-197af627fec5)
+![3](https://github.com/AbhinavPatel0208/NetflixClone/assets/71115461/a8b8c3c5-1fe7-453b-b864-9aa893c628af)
+![4](https://github.com/AbhinavPatel0208/NetflixClone/assets/71115461/96c76145-5e1d-4659-85b6-1b26e60b1e65)
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
 
